@@ -14,10 +14,10 @@ from google.cloud import vision
 from google.cloud import language
 import mysql.connector
 
-cnx = mysql.connector.connect(user='root', password='pushka',
+cnx = mysql.connector.connect(user='root', password='PASSWORD',
                               host='127.0.0.1',
                               database='dl_ocr')
-cnx2 = mysql.connector.connect(user='root', password='pushka',
+cnx2 = mysql.connector.connect(user='root', password='PASSWORD',
                                host='127.0.0.1',
                                database='dl_ocr')
 
