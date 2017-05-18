@@ -16,10 +16,10 @@ import mysql.connector
 
 
 
-cnx = mysql.connector.connect(user='root', password='PASSWORD',
+cnx = mysql.connector.connect(user='root', password='pushka',
                               host='127.0.0.1',
                               database='ocr')
-cnx2 = mysql.connector.connect(user='root', password='PASSWORD',
+cnx2 = mysql.connector.connect(user='root', password='pushka',
                                host='127.0.0.1',
                                database='ocr')
 
@@ -27,15 +27,6 @@ cnx2 = mysql.connector.connect(user='root', password='PASSWORD',
 cursor = cnx.cursor(buffered=True)
 cursor2 = cnx2.cursor(buffered=True)
 
-# prepare TEI document
-tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-tei_header = etree.SubElement(tei, 'teiHeader')
-filedesc = etree.SubElement(tei_header, 'fileDesc')
-file_titlestmt = etree.SubElement(filedesc, 'titleStmt')
-titlemain = etree.SubElement(file_titlestmt, 'title', type='main')
-body = etree.SubElement(tei,"text")
-root = etree.SubElement(tei, "p")
-root.text = ""
 
 ## VISION API SECTION
 # Instantiates a client
@@ -124,25 +115,3 @@ for file in files_list[i:end]:
                 cursor.execute(doc_name_query)
                 cnx.commit()                
             
-# This section uses the y3 vertex to identify line breaks    
-#    query = ("select a.doc_id,a.y3, a.y3 - COALESCE(b.y3,0) as DIFF_to_Prev from ocr.documents a LEFT OUTER JOIN ocr.documents b ON (a.doc_id = b.doc_id + 1)")
-#    cursor2.execute(query)
-    
-#    for (doc_id, y3, DIFF_to_Prev) in cursor2:
-#        if DIFF_to_Prev > 20:
-            #final_text += '<lb>'
-            #etree.SubElement(tei,'lb')
-               
-    
-    
-
-        
-                
-#print (etree.tostring(tei, pretty_print=True, xml_declaration=True, encoding='UTF-8'))
-#print (repr(etree.tostring(tei, pretty_print=True, xml_declaration=True, encoding='UTF-8')))
-
-
-#Save file as xml        
-
-#tree = etree.ElementTree(tei)
-#tree.write('{}.xml'.format(file_name_2), pretty_print=True, xml_declaration=True,   encoding="utf-8")
