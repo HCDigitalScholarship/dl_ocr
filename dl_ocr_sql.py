@@ -13,7 +13,8 @@ from collections import defaultdict
 from google.cloud import vision
 from google.cloud import language
 import mysql.connector
-
+from oauth2client.client import GoogleCredentials
+credentials = GoogleCredentials.get_application_default()
 
 
 cnx = mysql.connector.connect(user='root', password='pushka',
@@ -31,25 +32,26 @@ cursor2 = cnx2.cursor(buffered=True)
 ## VISION API SECTION
 # Instantiates a client
 #vision_client = vision.Client()
-vision_client = vision.Client.from_service_account_json('/Users/ajanco/projects/46270ee61e5d.json')
+vision_client = vision.Client.from_service_account_json('/home/ajanco/46270ee61e5d.json')
 
 # Instantiates a client
 language_client = language.Client()
 
 #this finds the last entry in the database and sets the start of the loop at that file
 files_list = []
-for fn in os.listdir('/Users/ajanco/projects/dl_ocr/DQB/images/'):
-    
+for fn in os.listdir('/srv/dl_ocr/DQB/images/'):    
     files_list.append(fn)
+
+files_list.sort()
     
 end = len(files_list) 
 #Get filename of last record in the db
-query = ("SELECT doc_id, doc_name FROM ocr.documents WHERE doc_id = (SELECT MAX(doc_id) FROM dl_ocr.documents);")
+query = ("SELECT doc_id, doc_name FROM ocr.documents WHERE doc_id = (SELECT MAX(doc_id) FROM ocr.documents);")
 cursor.execute(query)
 
 #This finds the index for the file in the list of filenames 
-for (doc_name) in cursor:
-    get_this = doc_name[1]
+for doc in cursor:
+    get_this = doc[1]
 
 try:
     i = files_list.index(get_this)
@@ -58,7 +60,7 @@ except (NameError):
     
 for file in files_list[i:end]:
 
-    file_name = "/Users/ajanco/projects/dl_ocr/DQB/images/" + file
+    file_name = "/srv/dl_ocr/DQB/images/" + file
 
     file_name_1 = '"' + str(file) + '"'
     #file_name_2 = str(file_name.split('/', -1)[-1])
