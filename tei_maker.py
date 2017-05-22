@@ -63,5 +63,5 @@ for doc in doc_names_list:
 
 
     tree = etree.ElementTree(doc)
-    #tree.write('experiment.xml', pretty_print=True, xml_declaration=True,   encoding="utf-8")
     tree.write('{}.xml'.format(doc_name), pretty_print=True, xml_declaration=True,   encoding="utf-8")
+    tree.write()
